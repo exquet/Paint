@@ -39,3 +39,10 @@ void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     painter.drawImage(0, 0, m_image); // отрисовка изображения
 }
+
+void MainWindow::on_actionClear_triggered()
+{
+    m_image.fill(Qt::white);
+    update();
+}
+

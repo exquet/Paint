@@ -26,6 +26,9 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
 
+private slots:
+    void on_actionClear_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
