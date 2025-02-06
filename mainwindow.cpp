@@ -37,3 +37,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
         update();
     }
 }
+
+void MainWindow::paintEvent(QPaintEvent *event){
+    QPainter painter(this);
+    // Рисуем наше изображение (холст) в верхнем левом углу окна (0,0)
+    painter.drawImage(0, 0, m_image);
+}
