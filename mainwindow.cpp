@@ -10,6 +10,30 @@ MainWindow::MainWindow(QWidget *parent)
     MainWindow::resize(800, 600);
     m_image = QImage(800, 600, QImage::Format_RGB32); // создание холста
     m_image.fill(Qt::white);
+
+    //file
+    QIcon fileIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/file.png");
+    ui->menuFile->setIcon(fileIcon);
+    QIcon saveIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/save.png");
+    ui->actionSave->setIcon(saveIcon);
+    QIcon deleteIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/delete.png");
+    ui->actionClear->setIcon(deleteIcon);
+
+    //colour
+    QIcon colourIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/colorValue.png");
+    ui->menuColour->setIcon(colourIcon);
+    QIcon blackIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/black.png");
+    ui->actionblack->setIcon(blackIcon);
+    QIcon whiteIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/white.png");
+    ui->actionwhite->setIcon(whiteIcon);
+    QIcon redIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/red.png");
+    ui->actionred->setIcon(redIcon);
+    QIcon greenIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/green.png");
+    ui->actiongreen->setIcon(greenIcon);
+    QIcon blueIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/blue.png");
+    ui->actionblue->setIcon(blueIcon);
+
+    colourPen = (Qt::black);
 }
 
 MainWindow::~MainWindow()
@@ -28,7 +52,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
         QPainter painter(&m_image);
 
         // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
-        painter.setPen(QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.setPen(QPen(colourPen, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.drawLine(m_lastPoint, event->pos()); // отрисовка линии от начального положения до текущего
         m_lastPoint = event->pos(); // обновление положения курсора
         update(); // обновление холста
@@ -52,5 +76,35 @@ void MainWindow::on_actionSave_triggered()
     QString filters = "PNG (*.png);;JPEG (*.jpg *.jpeg);;All Files (*)";
     QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "", filters);
     m_image.save(fileName);
+}
+
+
+void MainWindow::on_actionblack_triggered()
+{
+    colourPen = (Qt::black);
+}
+
+
+void MainWindow::on_actionwhite_triggered()
+{
+    colourPen = (Qt::white);
+}
+
+
+void MainWindow::on_actionred_triggered()
+{
+    colourPen = (Qt::red);
+}
+
+
+void MainWindow::on_actionblue_triggered()
+{
+    colourPen = (Qt::blue);
+}
+
+
+void MainWindow::on_actiongreen_triggered()
+{
+    colourPen = (Qt::green);
 }
 

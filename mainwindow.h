@@ -32,9 +32,20 @@ private slots:
 
     void on_actionSave_triggered();
 
+    void on_actionblack_triggered();
+
+    void on_actionwhite_triggered();
+
+    void on_actionred_triggered();
+
+    void on_actionblue_triggered();
+
+    void on_actiongreen_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
     QPoint m_lastPoint;
+    QColor colourPen;
 };
 #endif // MAINWINDOW_H

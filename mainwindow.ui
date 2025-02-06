@@ -30,7 +30,18 @@
     <addaction name="actionClear"/>
     <addaction name="actionSave"/>
    </widget>
+   <widget class="QMenu" name="menuColour">
+    <property name="title">
+     <string>Colour</string>
+    </property>
+    <addaction name="actionblack"/>
+    <addaction name="actionwhite"/>
+    <addaction name="actionred"/>
+    <addaction name="actionblue"/>
+    <addaction name="actiongreen"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuColour"/>
   </widget>
   <action name="actionClear">
    <property name="text">
@@ -40,6 +51,31 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionblack">
+   <property name="text">
+    <string>black</string>
+   </property>
+  </action>
+  <action name="actionwhite">
+   <property name="text">
+    <string>white</string>
+   </property>
+  </action>
+  <action name="actionred">
+   <property name="text">
+    <string>red</string>
+   </property>
+  </action>
+  <action name="actionblue">
+   <property name="text">
+    <string>blue</string>
+   </property>
+  </action>
+  <action name="actiongreen">
+   <property name="text">
+    <string>green</string>
    </property>
   </action>
  </widget>
