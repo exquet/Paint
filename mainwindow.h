@@ -6,6 +6,7 @@
 #include <QPoint>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QFileDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,6 +29,8 @@ protected:
 
 private slots:
     void on_actionClear_triggered();
+
+    void on_actionSave_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -46,3 +46,11 @@ void MainWindow::on_actionClear_triggered()
     update();
 }
 
+
+void MainWindow::on_actionSave_triggered()
+{
+    QString filters = "PNG (*.png);;JPEG (*.jpg *.jpeg);;All Files (*)";
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "", filters);
+    m_image.save(fileName);
+}
+
