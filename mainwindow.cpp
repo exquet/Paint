@@ -163,8 +163,13 @@ void MainWindow::on_actioncustom_triggered()
 
 void MainWindow::on_actionreturn_triggered()
 {
-    m_image = images.last();
-    update();
-    images.pop_back();
+    if(!images.isEmpty()){
+        m_image = images.last();
+        update();
+        images.pop_back();
+    }
+    else{
+        QMessageBox::information(this, tr("Error!"), tr("There is no action to return"));
+    }
 }
 

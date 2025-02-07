@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QVector>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
