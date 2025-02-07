@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , colourPen(Qt::black)
     , penThickness(3)
+    , isFill(false)
 {
     ui->setupUi(this);
 
@@ -45,6 +46,13 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon recoverIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/recover.png");
     ui->actionreturn->setIcon(recoverIcon);
 
+    //pen(fill)
+    QIcon penIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/pen.png");
+    ui->menufill->setIcon(penIcon);
+    ui->actionpen->setIcon(penIcon);
+    QIcon fillIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/fill.png");
+    ui->actionFill->setIcon(fillIcon);
+
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +64,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
     if(event->button() == Qt::LeftButton){ // отслеживание первого нажатия
         m_lastPoint = event->pos();
         images.push_back(m_image);
+
+        if(isFill){ fillingPlace(m_image, m_lastPoint, colourPen); }
     }
 }
 
@@ -170,6 +180,49 @@ void MainWindow::on_actionreturn_triggered()
     }
     else{
         QMessageBox::information(this, tr("Error!"), tr("There is no action to return"));
+    }
+}
+
+
+void MainWindow::on_actionFill_triggered()
+{
+    QIcon fillIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/fill.png");
+    ui->menufill->setIcon(fillIcon);
+    isFill = true;
+}
+
+
+void MainWindow::on_actionpen_triggered()
+{
+    QIcon penIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/pen.png");
+    ui->menufill->setIcon(penIcon);
+    isFill = false;
+}
+
+void MainWindow::fillingPlace(QImage &image, const QPoint &pos, const QColor &color){
+    QColor targetColor = image.pixelColor(pos);
+    if(color == targetColor){return;}
+
+    QStack<QPoint> stack;
+    stack.push(pos);
+
+    while(!stack.isEmpty()){
+        QPoint pt = stack.pop(); // извлекает точку из stack
+
+        // проверяем, что точка находится внутри границ изображения
+        if (pt.x() < 0 || pt.x() >= image.width() || pt.y() < 0 || pt.y() >= image.height()){continue;}
+
+        QColor currencyColor = image.pixelColor(pt);
+        if(currencyColor == targetColor){
+            image.setPixelColor(pt, color); // замена цвета
+
+            // добавление соседних пикселей в стек
+            stack.push(QPoint(pt.x()+1, pt.y()));
+            stack.push(QPoint(pt.x()-1, pt.y()));
+            stack.push(QPoint(pt.x(), pt.y()+1));
+            stack.push(QPoint(pt.x(), pt.y()-1));
+        }
+        update();
     }
 }
 

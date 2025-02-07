@@ -57,10 +57,18 @@
     </property>
     <addaction name="actionreturn"/>
    </widget>
+   <widget class="QMenu" name="menufill">
+    <property name="title">
+     <string>pen</string>
+    </property>
+    <addaction name="actionFill"/>
+    <addaction name="actionpen"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
    <addaction name="menuThickness"/>
    <addaction name="menuback"/>
+   <addaction name="menufill"/>
   </widget>
   <action name="actionClear">
    <property name="text">
@@ -130,6 +138,16 @@
   <action name="actionreturn">
    <property name="text">
     <string>recover</string>
+   </property>
+  </action>
+  <action name="actionFill">
+   <property name="text">
+    <string>fill</string>
+   </property>
+  </action>
+  <action name="actionpen">
+   <property name="text">
+    <string>pen</string>
    </property>
   </action>
  </widget>

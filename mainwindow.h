@@ -10,6 +10,7 @@
 #include <QInputDialog>
 #include <QVector>
 #include <QMessageBox>
+#include <QStack>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,6 +30,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
+    void fillingPlace(QImage &image, const QPoint &pos, const QColor &color);
 
 private slots:
     void on_actionClear_triggered();
@@ -59,6 +61,10 @@ private slots:
 
     void on_actionreturn_triggered();
 
+    void on_actionFill_triggered();
+
+    void on_actionpen_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
@@ -66,5 +72,6 @@ private:
     QColor colourPen;
     int penThickness;
     QVector<QImage> images;
+    bool isFill;
 };
 #endif // MAINWINDOW_H
