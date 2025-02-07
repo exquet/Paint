@@ -4,6 +4,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , colourPen(Qt::black)
+    , penThickness(3)
 {
     ui->setupUi(this);
 
@@ -33,7 +35,10 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon blueIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/blue.png");
     ui->actionblue->setIcon(blueIcon);
 
-    colourPen = (Qt::black);
+    //thickness
+    QIcon thicknessIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/thickness.png");
+    ui->menuThickness->setIcon(thicknessIcon);
+
 }
 
 MainWindow::~MainWindow()
@@ -52,7 +57,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
         QPainter painter(&m_image);
 
         // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
-        painter.setPen(QPen(colourPen, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.drawLine(m_lastPoint, event->pos()); // отрисовка линии от начального положения до текущего
         m_lastPoint = event->pos(); // обновление положения курсора
         update(); // обновление холста
@@ -74,7 +79,7 @@ void MainWindow::on_actionClear_triggered()
 void MainWindow::on_actionSave_triggered()
 {
     QString filters = "PNG (*.png);;JPEG (*.jpg *.jpeg);;All Files (*)";
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "", filters);
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "image", filters);
     m_image.save(fileName);
 }
 
@@ -106,5 +111,46 @@ void MainWindow::on_actionblue_triggered()
 void MainWindow::on_actiongreen_triggered()
 {
     colourPen = (Qt::green);
+}
+
+
+void MainWindow::on_action1px_triggered()
+{
+    penThickness = 1;
+}
+
+
+void MainWindow::on_action2px_triggered()
+{
+    penThickness = 2;
+}
+
+
+void MainWindow::on_action3px_triggered()
+{
+    penThickness = 3;
+}
+
+
+void MainWindow::on_action4px_triggered()
+{
+    penThickness = 4;
+}
+
+
+void MainWindow::on_action5px_triggered()
+{
+    penThickness = 5;
+}
+
+
+void MainWindow::on_actioncustom_triggered()
+{
+    bool ok;
+    int number = QInputDialog::getInt(this, tr("Enter a number"), tr("number: "), 0, -2147483647, 2147483647, 1, &ok);
+
+    if(ok){
+        penThickness = number;
+    }
 }
 

@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QFileDialog>
+#include <QInputDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -42,10 +43,23 @@ private slots:
 
     void on_actiongreen_triggered();
 
+    void on_action1px_triggered();
+
+    void on_action2px_triggered();
+
+    void on_action3px_triggered();
+
+    void on_action4px_triggered();
+
+    void on_action5px_triggered();
+
+    void on_actioncustom_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
     QPoint m_lastPoint;
     QColor colourPen;
+    int penThickness;
 };
 #endif // MAINWINDOW_H

@@ -40,8 +40,20 @@
     <addaction name="actionblue"/>
     <addaction name="actiongreen"/>
    </widget>
+   <widget class="QMenu" name="menuThickness">
+    <property name="title">
+     <string>Thickness</string>
+    </property>
+    <addaction name="action1px"/>
+    <addaction name="action2px"/>
+    <addaction name="action3px"/>
+    <addaction name="action4px"/>
+    <addaction name="action5px"/>
+    <addaction name="actioncustom"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
+   <addaction name="menuThickness"/>
   </widget>
   <action name="actionClear">
    <property name="text">
@@ -76,6 +88,36 @@
   <action name="actiongreen">
    <property name="text">
     <string>green</string>
+   </property>
+  </action>
+  <action name="action1px">
+   <property name="text">
+    <string>1px</string>
+   </property>
+  </action>
+  <action name="action2px">
+   <property name="text">
+    <string>2px</string>
+   </property>
+  </action>
+  <action name="action3px">
+   <property name="text">
+    <string>3px</string>
+   </property>
+  </action>
+  <action name="action4px">
+   <property name="text">
+    <string>4px</string>
+   </property>
+  </action>
+  <action name="action5px">
+   <property name="text">
+    <string>5px</string>
+   </property>
+  </action>
+  <action name="actioncustom">
+   <property name="text">
+    <string>custom</string>
    </property>
   </action>
  </widget>
