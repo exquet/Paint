@@ -11,6 +11,7 @@
 #include <QVector>
 #include <QMessageBox>
 #include <QStack>
+#include <QResizeEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -31,6 +32,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void fillingPlace(QImage &image, const QPoint &pos, const QColor &color);
+    void resizeEvent(QResizeEvent *event) override;
+
 
 private slots:
     void on_actionClear_triggered();

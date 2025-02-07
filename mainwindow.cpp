@@ -173,7 +173,7 @@ void MainWindow::on_actioncustom_triggered()
 
 void MainWindow::on_actionreturn_triggered()
 {
-    if(!images.isEmpty()){
+    if(!images.isEmpty()){ 
         m_image = images.last();
         update();
         images.pop_back();
@@ -225,4 +225,18 @@ void MainWindow::fillingPlace(QImage &image, const QPoint &pos, const QColor &co
         update();
     }
 }
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    if (event->size().width() > m_image.width() || event->size().height() > m_image.height())
+    {
+        QImage newImage(event->size(), QImage::Format_RGB32);
+        newImage.fill(Qt::white);
+        QPainter painter(&newImage);
+        painter.drawImage(QPoint(0, 0), m_image);
+        m_image = newImage;
+    }
+    QWidget::resizeEvent(event);
+}
+
 
