@@ -51,9 +51,16 @@
     <addaction name="action5px"/>
     <addaction name="actioncustom"/>
    </widget>
+   <widget class="QMenu" name="menuback">
+    <property name="title">
+     <string>back</string>
+    </property>
+    <addaction name="actionreturn"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
    <addaction name="menuThickness"/>
+   <addaction name="menuback"/>
   </widget>
   <action name="actionClear">
    <property name="text">
@@ -118,6 +125,11 @@
   <action name="actioncustom">
    <property name="text">
     <string>custom</string>
+   </property>
+  </action>
+  <action name="actionreturn">
+   <property name="text">
+    <string>recover</string>
    </property>
   </action>
  </widget>

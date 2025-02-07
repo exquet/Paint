@@ -39,6 +39,12 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon thicknessIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/thickness.png");
     ui->menuThickness->setIcon(thicknessIcon);
 
+    //back
+    QIcon backIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/back.png");
+    ui->menuback->setIcon(backIcon);
+    QIcon recoverIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/recover.png");
+    ui->actionreturn->setIcon(recoverIcon);
+
 }
 
 MainWindow::~MainWindow()
@@ -49,13 +55,13 @@ MainWindow::~MainWindow()
 void MainWindow::mousePressEvent(QMouseEvent *event){
     if(event->button() == Qt::LeftButton){ // отслеживание первого нажатия
         m_lastPoint = event->pos();
+        images.push_back(m_image);
     }
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event){
     if(event->buttons() == Qt::LeftButton){ // отслеживание изменения положия при нажатом ЛКМ
         QPainter painter(&m_image);
-
         // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
         painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.drawLine(m_lastPoint, event->pos()); // отрисовка линии от начального положения до текущего
@@ -152,5 +158,13 @@ void MainWindow::on_actioncustom_triggered()
     if(ok){
         penThickness = number;
     }
+}
+
+
+void MainWindow::on_actionreturn_triggered()
+{
+    m_image = images.last();
+    update();
+    images.pop_back();
 }
 

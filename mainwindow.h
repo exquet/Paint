@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QFileDialog>
 #include <QInputDialog>
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -55,11 +56,14 @@ private slots:
 
     void on_actioncustom_triggered();
 
+    void on_actionreturn_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
     QPoint m_lastPoint;
     QColor colourPen;
     int penThickness;
+    QVector<QImage> images;
 };
 #endif // MAINWINDOW_H
