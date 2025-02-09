@@ -235,6 +235,10 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         QPainter painter(&newImage);
         painter.drawImage(QPoint(0, 0), m_image);
         m_image = newImage;
+
+        for(QImage &img : images){
+            img = img.scaled(event->size(), Qt::IgnoreAspectRatio, Qt::FastTransformation);
+        }
     }
     QWidget::resizeEvent(event);
 }
