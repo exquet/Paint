@@ -64,11 +64,18 @@
     <addaction name="actionFill"/>
     <addaction name="actionpen"/>
    </widget>
+   <widget class="QMenu" name="menushapes">
+    <property name="title">
+     <string>shapes</string>
+    </property>
+    <addaction name="actioncircle"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
    <addaction name="menuThickness"/>
    <addaction name="menuback"/>
    <addaction name="menufill"/>
+   <addaction name="menushapes"/>
   </widget>
   <action name="actionClear">
    <property name="text">
@@ -148,6 +155,11 @@
   <action name="actionpen">
    <property name="text">
     <string>pen</string>
+   </property>
+  </action>
+  <action name="actioncircle">
+   <property name="text">
+    <string>circle</string>
    </property>
   </action>
  </widget>

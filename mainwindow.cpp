@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
     , colourPen(Qt::black)
     , penThickness(3)
     , isFill(false)
+    , isShapeMode(false)
+    , shapeSize(50)
 {
     ui->setupUi(this);
 
@@ -66,17 +68,30 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
         images.push_back(m_image);
 
         if(isFill){ fillingPlace(m_image, m_lastPoint, colourPen); }
+        else if(isShapeMode){
+            QPainter painter(&m_image);
+            painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            // верхний левый угол ограничивающего прямоугольника вычисляем так, чтобы круг был центром в event->pos()
+            painter.drawEllipse(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
+            update();
+        }
     }
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event){
     if(event->buttons() == Qt::LeftButton){ // отслеживание изменения положия при нажатом ЛКМ
         QPainter painter(&m_image);
-        // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
-        painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.drawLine(m_lastPoint, event->pos()); // отрисовка линии от начального положения до текущего
-        m_lastPoint = event->pos(); // обновление положения курсора
-        update(); // обновление холста
+        if(isShapeMode){
+            painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawEllipse(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
+        }
+        else{
+            // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
+            painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawLine(m_lastPoint, event->pos()); // отрисовка линии от начального положения до текущего
+            m_lastPoint = event->pos(); // обновление положения курсора
+        }
+        update();
     }
 }
 
@@ -189,6 +204,7 @@ void MainWindow::on_actionFill_triggered()
     QIcon fillIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/fill.png");
     ui->menufill->setIcon(fillIcon);
     isFill = true;
+    isShapeMode = false;
 }
 
 
@@ -197,6 +213,7 @@ void MainWindow::on_actionpen_triggered()
     QIcon penIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/pen.png");
     ui->menufill->setIcon(penIcon);
     isFill = false;
+    isShapeMode = false;
 }
 
 void MainWindow::fillingPlace(QImage &image, const QPoint &pos, const QColor &color){
@@ -243,4 +260,15 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
+
+
+void MainWindow::on_actioncircle_triggered()
+{
+    bool ok;
+    int size = QInputDialog::getInt(this, tr("Выберите размер фигуры"), tr("Размер:"), shapeSize, 1, 2500, 1, &ok);
+    if(ok){
+        shapeSize = size;
+        isShapeMode = true;
+    }
+}
 

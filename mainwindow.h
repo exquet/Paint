@@ -68,6 +68,8 @@ private slots:
 
     void on_actionpen_triggered();
 
+    void on_actioncircle_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
@@ -76,5 +78,7 @@ private:
     int penThickness;
     QVector<QImage> images;
     bool isFill;
+    bool isShapeMode;
+    int shapeSize;
 };
 #endif // MAINWINDOW_H
