@@ -55,6 +55,10 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon fillIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/fill.png");
     ui->actionFill->setIcon(fillIcon);
 
+    setMouseTracking(true);
+    if (centralWidget()){
+        centralWidget()->setMouseTracking(true);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -79,6 +83,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event){
+    mousePos = event->pos();
+
     if(event->buttons() == Qt::LeftButton){ // отслеживание изменения положия при нажатом ЛКМ
         QPainter painter(&m_image);
         if(isShapeMode){
@@ -91,13 +97,22 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
             painter.drawLine(m_lastPoint, event->pos()); // отрисовка линии от начального положения до текущего
             m_lastPoint = event->pos(); // обновление положения курсора
         }
-        update();
     }
+    update();
 }
 
 void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     painter.drawImage(0, 0, m_image); // отрисовка изображения
+
+    if(isShapeMode){
+        QPen previewPen(Qt::gray);
+        previewPen.setStyle(Qt::SolidLine);
+        previewPen.setWidth(1);
+        painter.setPen(previewPen);
+        painter.setBrush(Qt::NoBrush);
+        painter.drawEllipse(mousePos.x() - shapeSize/2, mousePos.y() - shapeSize/2, shapeSize, shapeSize);
+    }
 }
 
 void MainWindow::on_actionClear_triggered()

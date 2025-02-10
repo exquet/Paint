@@ -80,5 +80,6 @@ private:
     bool isFill;
     bool isShapeMode;
     int shapeSize;
+    QPoint mousePos;
 };
 #endif // MAINWINDOW_H
