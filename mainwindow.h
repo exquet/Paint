@@ -68,7 +68,7 @@ private slots:
 
     void on_actionpen_triggered();
 
-    void on_actioncircle_triggered();
+    void on_actionShapes();
 
 private:
     Ui::MainWindow *ui;

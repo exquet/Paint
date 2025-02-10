@@ -55,10 +55,18 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon fillIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/fill.png");
     ui->actionFill->setIcon(fillIcon);
 
+    //shapes
+    QIcon shapesIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/shapes.png");
+    ui->menushapes->setIcon(shapesIcon);
+    QIcon circleIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/circle.png");
+    ui->actioncircle->setIcon(circleIcon);
+
     setMouseTracking(true);
     if (centralWidget()){
         centralWidget()->setMouseTracking(true);
     }
+
+    connect(ui->actioncircle, &QAction::triggered, this, &MainWindow::on_actionShapes);
 }
 
 MainWindow::~MainWindow()
@@ -269,7 +277,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         m_image = newImage;
 
         for(QImage &img : images){
-            img = img.scaled(event->size(), Qt::IgnoreAspectRatio, Qt::FastTransformation);
+            img = img.scaled(event->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         }
     }
     QWidget::resizeEvent(event);
@@ -277,10 +285,10 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 
 
-void MainWindow::on_actioncircle_triggered()
+void MainWindow::on_actionShapes()
 {
     bool ok;
-    int size = QInputDialog::getInt(this, tr("Выберите размер фигуры"), tr("Размер:"), shapeSize, 1, 2500, 1, &ok);
+    int size = QInputDialog::getInt(this, tr("Выберите размер"), tr("Размер:"), shapeSize, 1, 2500, 1, &ok);
     if(ok){
         shapeSize = size;
         isShapeMode = true;
