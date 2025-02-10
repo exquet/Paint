@@ -70,6 +70,7 @@
     </property>
     <addaction name="actioncircle"/>
     <addaction name="actionsquare"/>
+    <addaction name="actiontext"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
@@ -172,6 +173,14 @@
    </property>
    <property name="text">
     <string>square</string>
+   </property>
+  </action>
+  <action name="actiontext">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>text</string>
    </property>
   </action>
  </widget>

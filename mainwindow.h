@@ -75,6 +75,8 @@ private slots:
 
     void on_actionsquare_triggered();
 
+    void on_actiontext_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
@@ -86,5 +88,6 @@ private:
     bool isShapeMode;
     int shapeSize;
     QPoint mousePos;
+    QString shapeText;
 };
 #endif // MAINWINDOW_H

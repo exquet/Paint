@@ -62,6 +62,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->actioncircle->setIcon(circleIcon);
     QIcon squareIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/square.png");
     ui->actionsquare->setIcon(squareIcon);
+    QIcon textIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/text.png");
+    ui->actiontext->setIcon(textIcon);
 
     setMouseTracking(true);
     if (centralWidget()){
@@ -70,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->actioncircle, &QAction::triggered, this, &MainWindow::on_actionShapes);
     connect(ui->actionsquare, &QAction::triggered, this, &MainWindow::on_actionShapes);
+    connect(ui->actiontext, &QAction::triggered, this, &MainWindow::on_actionShapes);
 }
 
 MainWindow::~MainWindow()
@@ -92,6 +95,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
         }
         if(isShapeMode && ui->actionsquare->isChecked()){
             painter.drawRect(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
+            update();
+        }
+        if(isShapeMode && ui->actiontext->isChecked()){
+            painter.drawText(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeText);
             update();
         }
     }
@@ -314,6 +321,7 @@ void MainWindow::on_actioncircle_triggered()
 {
     ui->actioncircle->setChecked(true);
     ui->actionsquare->setChecked(false);
+    ui->actiontext->setChecked(false);
 }
 
 
@@ -321,5 +329,15 @@ void MainWindow::on_actionsquare_triggered()
 {
     ui->actioncircle->setChecked(false);
     ui->actionsquare->setChecked(true);
+}
+
+
+void MainWindow::on_actiontext_triggered()
+{
+    ui->actioncircle->setChecked(false);
+    ui->actionsquare->setChecked(false);
+    ui->actiontext->setChecked(true);
+
+    shapeText = QInputDialog::getText(this, tr("Введите текст"), tr("Text: "));
 }
 
