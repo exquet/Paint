@@ -69,6 +69,7 @@
      <string>shapes</string>
     </property>
     <addaction name="actioncircle"/>
+    <addaction name="actionsquare"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
@@ -158,8 +159,19 @@
    </property>
   </action>
   <action name="actioncircle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>circle</string>
+   </property>
+  </action>
+  <action name="actionsquare">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>square</string>
    </property>
   </action>
  </widget>

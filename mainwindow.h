@@ -70,6 +70,11 @@ private slots:
 
     void on_actionShapes();
 
+
+    void on_actioncircle_triggered();
+
+    void on_actionsquare_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;

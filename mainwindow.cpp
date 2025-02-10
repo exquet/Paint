@@ -60,6 +60,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->menushapes->setIcon(shapesIcon);
     QIcon circleIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/circle.png");
     ui->actioncircle->setIcon(circleIcon);
+    QIcon squareIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/square.png");
+    ui->actionsquare->setIcon(squareIcon);
 
     setMouseTracking(true);
     if (centralWidget()){
@@ -67,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     connect(ui->actioncircle, &QAction::triggered, this, &MainWindow::on_actionShapes);
+    connect(ui->actionsquare, &QAction::triggered, this, &MainWindow::on_actionShapes);
 }
 
 MainWindow::~MainWindow()
@@ -78,13 +81,17 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
     if(event->button() == Qt::LeftButton){ // отслеживание первого нажатия
         m_lastPoint = event->pos();
         images.push_back(m_image);
+        QPainter painter(&m_image);
+        painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
         if(isFill){ fillingPlace(m_image, m_lastPoint, colourPen); }
-        else if(isShapeMode){
-            QPainter painter(&m_image);
-            painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        if(isShapeMode && ui->actioncircle->isChecked()){
             // верхний левый угол ограничивающего прямоугольника вычисляем так, чтобы круг был центром в event->pos()
             painter.drawEllipse(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
+            update();
+        }
+        if(isShapeMode && ui->actionsquare->isChecked()){
+            painter.drawRect(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
             update();
         }
     }
@@ -95,9 +102,13 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
 
     if(event->buttons() == Qt::LeftButton){ // отслеживание изменения положия при нажатом ЛКМ
         QPainter painter(&m_image);
-        if(isShapeMode){
+        if(isShapeMode && ui->actioncircle->isChecked()){
             painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawEllipse(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
+        }
+        else if(isShapeMode && ui->actionsquare->isChecked()){
+            painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawRect(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
         }
         else{
             // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
@@ -113,13 +124,17 @@ void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     painter.drawImage(0, 0, m_image); // отрисовка изображения
 
-    if(isShapeMode){
-        QPen previewPen(Qt::gray);
-        previewPen.setStyle(Qt::SolidLine);
-        previewPen.setWidth(1);
-        painter.setPen(previewPen);
-        painter.setBrush(Qt::NoBrush);
+    QPen previewPen(Qt::gray);
+    previewPen.setStyle(Qt::SolidLine);
+    previewPen.setWidth(1);
+    painter.setPen(previewPen);
+    painter.setBrush(Qt::NoBrush);
+
+    if(isShapeMode && ui->actioncircle->isChecked()){
         painter.drawEllipse(mousePos.x() - shapeSize/2, mousePos.y() - shapeSize/2, shapeSize, shapeSize);
+    }
+    if(isShapeMode && ui->actionsquare->isChecked()){
+        painter.drawRect(mousePos.x() - shapeSize/2, mousePos.y() - shapeSize/2, shapeSize, shapeSize);
     }
 }
 
@@ -293,5 +308,18 @@ void MainWindow::on_actionShapes()
         shapeSize = size;
         isShapeMode = true;
     }
+}
+
+void MainWindow::on_actioncircle_triggered()
+{
+    ui->actioncircle->setChecked(true);
+    ui->actionsquare->setChecked(false);
+}
+
+
+void MainWindow::on_actionsquare_triggered()
+{
+    ui->actioncircle->setChecked(false);
+    ui->actionsquare->setChecked(true);
 }
 
