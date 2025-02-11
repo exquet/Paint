@@ -98,7 +98,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
             update();
         }
         if(isShapeMode && ui->actiontext->isChecked()){
-            painter.drawText(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeText);
+            QFont font = painter.font();
+            font.setPointSize(shapeSize); // size
+            painter.setFont(font);
+            painter.drawText(event->pos().x(), event->pos().y(), shapeText);
             update();
         }
     }
@@ -117,6 +120,14 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
             painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawRect(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
         }
+        else if(isShapeMode && ui->actiontext->isChecked()){
+            QFont font = painter.font();
+            font.setPointSize(shapeSize);
+            painter.setFont(font);
+            painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawText(event->pos().x(), event->pos().y(), shapeText);
+        }
+
         else{
             // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
             painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -142,6 +153,12 @@ void MainWindow::paintEvent(QPaintEvent *event){
     }
     if(isShapeMode && ui->actionsquare->isChecked()){
         painter.drawRect(mousePos.x() - shapeSize/2, mousePos.y() - shapeSize/2, shapeSize, shapeSize);
+    }
+    if(isShapeMode && ui->actiontext->isChecked()){
+        QFont font = painter.font();
+        font.setPointSize(shapeSize);
+        painter.setFont(font);
+        painter.drawText(mousePos.x(), mousePos.y(), shapeText);
     }
 }
 
