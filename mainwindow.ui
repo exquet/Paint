@@ -90,51 +90,87 @@
    </property>
   </action>
   <action name="actionblack">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>black</string>
    </property>
   </action>
   <action name="actionwhite">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>white</string>
    </property>
   </action>
   <action name="actionred">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>red</string>
    </property>
   </action>
   <action name="actionblue">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>blue</string>
    </property>
   </action>
   <action name="actiongreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>green</string>
    </property>
   </action>
   <action name="action1px">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>1px</string>
    </property>
   </action>
   <action name="action2px">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>2px</string>
    </property>
   </action>
   <action name="action3px">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>3px</string>
    </property>
   </action>
   <action name="action4px">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>4px</string>
    </property>
   </action>
   <action name="action5px">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>5px</string>
    </property>
@@ -150,11 +186,20 @@
    </property>
   </action>
   <action name="actionFill">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>fill</string>
    </property>
   </action>
   <action name="actionpen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>pen</string>
    </property>

@@ -180,60 +180,110 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionblack_triggered()
 {
     colourPen = (Qt::black);
+    ui->actionblack->setChecked(true);
+    ui->actionwhite->setChecked(false);
+    ui->actionblue->setChecked(false);
+    ui->actiongreen->setChecked(false);
+    ui->actionred->setChecked(false);
 }
 
 
 void MainWindow::on_actionwhite_triggered()
 {
     colourPen = (Qt::white);
+    ui->actionblack->setChecked(false);
+    ui->actionwhite->setChecked(true);
+    ui->actionblue->setChecked(false);
+    ui->actiongreen->setChecked(false);
+    ui->actionred->setChecked(false);
 }
 
 
 void MainWindow::on_actionred_triggered()
 {
     colourPen = (Qt::red);
+    ui->actionblack->setChecked(false);
+    ui->actionwhite->setChecked(false);
+    ui->actionblue->setChecked(false);
+    ui->actiongreen->setChecked(false);
+    ui->actionred->setChecked(true);
 }
 
 
 void MainWindow::on_actionblue_triggered()
 {
     colourPen = (Qt::blue);
+    ui->actionblack->setChecked(false);
+    ui->actionwhite->setChecked(false);
+    ui->actionblue->setChecked(true);
+    ui->actiongreen->setChecked(false);
+    ui->actionred->setChecked(false);
 }
 
 
 void MainWindow::on_actiongreen_triggered()
 {
     colourPen = (Qt::green);
+    ui->actionblack->setChecked(false);
+    ui->actionwhite->setChecked(false);
+    ui->actionblue->setChecked(false);
+    ui->actiongreen->setChecked(true);
+    ui->actionred->setChecked(false);
 }
 
 
 void MainWindow::on_action1px_triggered()
 {
     penThickness = 1;
+    ui->action1px->setChecked(true);
+    ui->action2px->setChecked(false);
+    ui->action3px->setChecked(false);
+    ui->action4px->setChecked(false);
+    ui->action5px->setChecked(false);
 }
 
 
 void MainWindow::on_action2px_triggered()
 {
     penThickness = 2;
+    ui->action1px->setChecked(false);
+    ui->action2px->setChecked(true);
+    ui->action3px->setChecked(false);
+    ui->action4px->setChecked(false);
+    ui->action5px->setChecked(false);
 }
 
 
 void MainWindow::on_action3px_triggered()
 {
     penThickness = 3;
+    ui->action1px->setChecked(false);
+    ui->action2px->setChecked(false);
+    ui->action3px->setChecked(true);
+    ui->action4px->setChecked(false);
+    ui->action5px->setChecked(false);
 }
 
 
 void MainWindow::on_action4px_triggered()
 {
     penThickness = 4;
+    ui->action1px->setChecked(false);
+    ui->action2px->setChecked(false);
+    ui->action3px->setChecked(false);
+    ui->action4px->setChecked(true);
+    ui->action5px->setChecked(false);
 }
 
 
 void MainWindow::on_action5px_triggered()
 {
     penThickness = 5;
+    ui->action1px->setChecked(false);
+    ui->action2px->setChecked(false);
+    ui->action3px->setChecked(false);
+    ui->action4px->setChecked(false);
+    ui->action5px->setChecked(true);
 }
 
 
@@ -267,6 +317,9 @@ void MainWindow::on_actionFill_triggered()
     ui->menufill->setIcon(fillIcon);
     isFill = true;
     isShapeMode = false;
+
+    ui->actionFill->setChecked(true);
+    ui->actionpen->setChecked(false);
 }
 
 
@@ -276,6 +329,9 @@ void MainWindow::on_actionpen_triggered()
     ui->menufill->setIcon(penIcon);
     isFill = false;
     isShapeMode = false;
+
+    ui->actionFill->setChecked(false);
+    ui->actionpen->setChecked(true);
 }
 
 void MainWindow::fillingPlace(QImage &image, const QPoint &pos, const QColor &color){
