@@ -341,14 +341,14 @@ void MainWindow::fillingPlace(QImage &image, const QPoint &pos, const QColor &co
     QStack<QPoint> stack;
     stack.push(pos);
 
-    while(!stack.isEmpty()){
+    while(!stack.isEmpty()) {
         QPoint pt = stack.pop(); // извлекает точку из stack
 
         // проверяем, что точка находится внутри границ изображения
         if (pt.x() < 0 || pt.x() >= image.width() || pt.y() < 0 || pt.y() >= image.height()){continue;}
 
         QColor currencyColor = image.pixelColor(pt);
-        if(currencyColor == targetColor){
+        if(currencyColor == targetColor) {
             image.setPixelColor(pt, color); // замена цвета
 
             // добавление соседних пикселей в стек
@@ -371,7 +371,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         painter.drawImage(QPoint(0, 0), m_image);
         m_image = newImage;
 
-        for(QImage &img : images){
+        for(QImage &img : images) {
             img = img.scaled(event->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         }
     }
@@ -382,11 +382,13 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::on_actionShapes()
 {
-    bool ok;
-    int size = QInputDialog::getInt(this, tr("Выберите размер"), tr("Размер:"), shapeSize, 1, 2500, 1, &ok);
-    if(ok){
-        shapeSize = size;
-        isShapeMode = true;
+    if(ui->actioncircle->isChecked() || ui->actionsquare->isChecked() || ui->actiontext->isChecked()) {
+        bool ok;
+        int size = QInputDialog::getInt(this, tr("Выберите размер"), tr("Размер:"), shapeSize, 1, 2500, 1, &ok);
+        if(ok) {
+            shapeSize = size;
+            isShapeMode = true;
+        }
     }
 }
 
@@ -402,6 +404,7 @@ void MainWindow::on_actionsquare_triggered()
 {
     ui->actioncircle->setChecked(false);
     ui->actionsquare->setChecked(true);
+    ui->actiontext->setChecked(false);
 }
 
 
@@ -411,6 +414,15 @@ void MainWindow::on_actiontext_triggered()
     ui->actionsquare->setChecked(false);
     ui->actiontext->setChecked(true);
 
-    shapeText = QInputDialog::getText(this, tr("Введите текст"), tr("Text: "));
+    bool ok;
+
+    shapeText = QInputDialog::getText(this, tr("Введите текст"), tr("Text: "),
+        QLineEdit::Normal, QString(), &ok);
+
+    if(ok && shapeText.isEmpty()) {
+        QMessageBox::warning(this, tr("Error"), "text is empty");
+        ui->actiontext->setChecked(false);
+    }
+
 }
 
