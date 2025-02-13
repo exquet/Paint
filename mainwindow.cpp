@@ -64,6 +64,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->actionsquare->setIcon(squareIcon);
     QIcon textIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/text.png");
     ui->actiontext->setIcon(textIcon);
+    QIcon polygonIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/polygon.png");
+    ui->actionpolygon->setIcon(polygonIcon);
 
     setMouseTracking(true);
     if (centralWidget()){
@@ -75,6 +77,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actiontext, &QAction::triggered, this, &MainWindow::on_actionShapes);
 
     setFocusPolicy(Qt::StrongFocus);
+
+    ui->enter_label->hide();
 
 }
 
@@ -109,6 +113,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
         }
         if(isShapeMode && ui->actionpolygon->isChecked()) {
             points.push_back(event->pos());
+
+            if(points.size() >= 2) {
+                ui->enter_label->show();
+            }
         }
     }
 }
@@ -448,20 +456,26 @@ void MainWindow::on_actionpolygon_triggered()
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-        QPainter painter(&m_image);
-        painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.setBrush(Qt::NoBrush);
+    if(points.size() >= 2){
+        if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+            QPainter painter(&m_image);
+            painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.setBrush(Qt::NoBrush);
 
-        QPolygon polygon(points);
-        painter.drawPolygon(polygon);
-        update();
+            QPolygon polygon(points);
+            painter.drawPolygon(polygon);
+            update();
 
-        points.clear();
+            points.clear();
+            ui->enter_label->hide();
+        }
+        else {
+            // если клавиша не Enter, вызываем стандартную обработку
+            QMainWindow::keyPressEvent(event);
+        }
     }
     else {
-        // если клавиша не Enter, вызываем стандартную обработку
-        QMainWindow::keyPressEvent(event);
+        QMessageBox::warning(this, tr("Ошибка!"), tr("Выбранно менее 2 точек"));
     }
 }
 
