@@ -12,6 +12,8 @@
 #include <QMessageBox>
 #include <QStack>
 #include <QResizeEvent>
+#include <QKeyEvent>
+#include <QPolygon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -33,6 +35,7 @@ protected:
     void paintEvent(QPaintEvent *event) override;
     void fillingPlace(QImage &image, const QPoint &pos, const QColor &color);
     void resizeEvent(QResizeEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
 
 private slots:
@@ -77,6 +80,8 @@ private slots:
 
     void on_actiontext_triggered();
 
+    void on_actionpolygon_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
@@ -89,5 +94,6 @@ private:
     int shapeSize;
     QPoint mousePos;
     QString shapeText;
+    QVector<QPoint> points;
 };
 #endif // MAINWINDOW_H

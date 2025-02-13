@@ -73,6 +73,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actioncircle, &QAction::triggered, this, &MainWindow::on_actionShapes);
     connect(ui->actionsquare, &QAction::triggered, this, &MainWindow::on_actionShapes);
     connect(ui->actiontext, &QAction::triggered, this, &MainWindow::on_actionShapes);
+
+    setFocusPolicy(Qt::StrongFocus);
+
 }
 
 MainWindow::~MainWindow()
@@ -88,21 +91,24 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
         painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
         if(isFill){ fillingPlace(m_image, m_lastPoint, colourPen); }
-        if(isShapeMode && ui->actioncircle->isChecked()){
+        if(isShapeMode && ui->actioncircle->isChecked()) {
             // верхний левый угол ограничивающего прямоугольника вычисляем так, чтобы круг был центром в event->pos()
             painter.drawEllipse(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
             update();
         }
-        if(isShapeMode && ui->actionsquare->isChecked()){
+        if(isShapeMode && ui->actionsquare->isChecked()) {
             painter.drawRect(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
             update();
         }
-        if(isShapeMode && ui->actiontext->isChecked()){
+        if(isShapeMode && ui->actiontext->isChecked()) {
             QFont font = painter.font();
             font.setPointSize(shapeSize); // size
             painter.setFont(font);
             painter.drawText(event->pos().x(), event->pos().y(), shapeText);
             update();
+        }
+        if(isShapeMode && ui->actionpolygon->isChecked()) {
+            points.push_back(event->pos());
         }
     }
 }
@@ -112,21 +118,22 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
 
     if(event->buttons() == Qt::LeftButton){ // отслеживание изменения положия при нажатом ЛКМ
         QPainter painter(&m_image);
-        if(isShapeMode && ui->actioncircle->isChecked()){
+        if(isShapeMode && ui->actioncircle->isChecked()) {
             painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawEllipse(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
         }
-        else if(isShapeMode && ui->actionsquare->isChecked()){
+        else if(isShapeMode && ui->actionsquare->isChecked()) {
             painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawRect(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
         }
-        else if(isShapeMode && ui->actiontext->isChecked()){
+        else if(isShapeMode && ui->actiontext->isChecked()) {
             QFont font = painter.font();
             font.setPointSize(shapeSize);
             painter.setFont(font);
             painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawText(event->pos().x(), event->pos().y(), shapeText);
         }
+        else if(isShapeMode && ui->actionpolygon->isChecked()){}
 
         else{
             // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
@@ -382,7 +389,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::on_actionShapes()
 {
-    if(ui->actioncircle->isChecked() || ui->actionsquare->isChecked() || ui->actiontext->isChecked()) {
+    if(ui->actioncircle->isChecked() || ui->actionsquare->isChecked() || ui->actiontext->isChecked() || ui->actionpolygon->isChecked()) {
         bool ok;
         int size = QInputDialog::getInt(this, tr("Выберите размер"), tr("Размер:"), shapeSize, 1, 2500, 1, &ok);
         if(ok) {
@@ -397,6 +404,7 @@ void MainWindow::on_actioncircle_triggered()
     ui->actioncircle->setChecked(true);
     ui->actionsquare->setChecked(false);
     ui->actiontext->setChecked(false);
+    ui->actionpolygon->setChecked(false);
 }
 
 
@@ -405,6 +413,7 @@ void MainWindow::on_actionsquare_triggered()
     ui->actioncircle->setChecked(false);
     ui->actionsquare->setChecked(true);
     ui->actiontext->setChecked(false);
+    ui->actionpolygon->setChecked(false);
 }
 
 
@@ -413,6 +422,7 @@ void MainWindow::on_actiontext_triggered()
     ui->actioncircle->setChecked(false);
     ui->actionsquare->setChecked(false);
     ui->actiontext->setChecked(true);
+    ui->actionpolygon->setChecked(false);
 
     bool ok;
 
@@ -420,9 +430,38 @@ void MainWindow::on_actiontext_triggered()
         QLineEdit::Normal, QString(), &ok);
 
     if(ok && shapeText.isEmpty()) {
-        QMessageBox::warning(this, tr("Error"), "text is empty");
+        QMessageBox::warning(this, tr("Ошибка"), "Текст пустой!");
         ui->actiontext->setChecked(false);
     }
 
+}
+
+
+void MainWindow::on_actionpolygon_triggered()
+{
+    ui->actioncircle->setChecked(false);
+    ui->actionsquare->setChecked(false);
+    ui->actiontext->setChecked(false);
+    ui->actionpolygon->setChecked(true);
+
+    isShapeMode = true;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+        QPainter painter(&m_image);
+        painter.setPen(QPen(colourPen, penThickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.setBrush(Qt::NoBrush);
+
+        QPolygon polygon(points);
+        painter.drawPolygon(polygon);
+        update();
+
+        points.clear();
+    }
+    else {
+        // если клавиша не Enter, вызываем стандартную обработку
+        QMainWindow::keyPressEvent(event);
+    }
 }
 

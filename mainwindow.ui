@@ -71,6 +71,7 @@
     <addaction name="actioncircle"/>
     <addaction name="actionsquare"/>
     <addaction name="actiontext"/>
+    <addaction name="actionpolygon"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
@@ -226,6 +227,14 @@
    </property>
    <property name="text">
     <string>text</string>
+   </property>
+  </action>
+  <action name="actionpolygon">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>polygon</string>
    </property>
   </action>
  </widget>
