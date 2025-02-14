@@ -67,6 +67,10 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon polygonIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/polygon.png");
     ui->actionpolygon->setIcon(polygonIcon);
 
+    //window
+    QIcon logoIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/logo.png");
+    MainWindow::setWindowIcon(logoIcon);
+
     setMouseTracking(true);
     if (centralWidget()){
         centralWidget()->setMouseTracking(true);
@@ -204,6 +208,7 @@ void MainWindow::on_actionblack_triggered()
     ui->actionblue->setChecked(false);
     ui->actiongreen->setChecked(false);
     ui->actionred->setChecked(false);
+    ui->actioncustom_2->setChecked(false);
 }
 
 
@@ -215,6 +220,7 @@ void MainWindow::on_actionwhite_triggered()
     ui->actionblue->setChecked(false);
     ui->actiongreen->setChecked(false);
     ui->actionred->setChecked(false);
+    ui->actioncustom_2->setChecked(false);
 }
 
 
@@ -226,6 +232,7 @@ void MainWindow::on_actionred_triggered()
     ui->actionblue->setChecked(false);
     ui->actiongreen->setChecked(false);
     ui->actionred->setChecked(true);
+    ui->actioncustom_2->setChecked(false);
 }
 
 
@@ -237,6 +244,7 @@ void MainWindow::on_actionblue_triggered()
     ui->actionblue->setChecked(true);
     ui->actiongreen->setChecked(false);
     ui->actionred->setChecked(false);
+    ui->actioncustom_2->setChecked(false);
 }
 
 
@@ -248,6 +256,7 @@ void MainWindow::on_actiongreen_triggered()
     ui->actionblue->setChecked(false);
     ui->actiongreen->setChecked(true);
     ui->actionred->setChecked(false);
+    ui->actioncustom_2->setChecked(false);
 }
 
 
@@ -481,5 +490,22 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     else {
         QMessageBox::warning(this, tr("Ошибка!"), tr("Выбранно менее 2 точек"));
     }
+}
+
+
+void MainWindow::on_actioncustom_2_triggered()
+{
+    QColor selectColor = QColorDialog::getColor(Qt::white, this, "Выберите цвет");
+
+    if (selectColor.isValid()) {
+        colourPen = selectColor;
+    }
+
+    ui->actioncustom_2->setChecked(true);
+    ui->actionblack->setChecked(false);
+    ui->actionwhite->setChecked(false);
+    ui->actionblue->setChecked(false);
+    ui->actiongreen->setChecked(false);
+    ui->actionred->setChecked(false);
 }
 

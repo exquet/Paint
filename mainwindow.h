@@ -14,6 +14,7 @@
 #include <QResizeEvent>
 #include <QKeyEvent>
 #include <QPolygon>
+#include <QColorDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -81,6 +82,8 @@ private slots:
     void on_actiontext_triggered();
 
     void on_actionpolygon_triggered();
+
+    void on_actioncustom_2_triggered();
 
 private:
     Ui::MainWindow *ui;

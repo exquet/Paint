@@ -63,6 +63,7 @@
     <addaction name="actionred"/>
     <addaction name="actionblue"/>
     <addaction name="actiongreen"/>
+    <addaction name="actioncustom_2"/>
    </widget>
    <widget class="QMenu" name="menuThickness">
     <property name="title">
@@ -259,6 +260,14 @@
    </property>
    <property name="text">
     <string>polygon</string>
+   </property>
+  </action>
+  <action name="actioncustom_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>custom</string>
    </property>
   </action>
  </widget>
