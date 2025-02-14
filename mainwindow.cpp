@@ -142,6 +142,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
             painter.drawText(event->pos().x(), event->pos().y(), shapeText);
         }
         else if(isShapeMode && ui->actionpolygon->isChecked()){}
+        else if(isFill) {}
 
         else{
             // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
@@ -174,6 +175,9 @@ void MainWindow::paintEvent(QPaintEvent *event){
         font.setPointSize(shapeSize);
         painter.setFont(font);
         painter.drawText(mousePos.x(), mousePos.y(), shapeText);
+    }
+    if(isShapeMode && ui->actionpolygon->isChecked()) {
+        painter.drawPolygon(points);
     }
 }
 
