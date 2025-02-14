@@ -85,6 +85,8 @@ private slots:
 
     void on_actioncustom_2_triggered();
 
+    void on_actioneraser_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;

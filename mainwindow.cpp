@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->actionpen->setIcon(penIcon);
     QIcon fillIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/fill.png");
     ui->actionFill->setIcon(fillIcon);
+    QIcon eraserIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/eraser.png");
+    ui->actioneraser->setIcon(eraserIcon);
 
     //shapes
     QIcon shapesIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/shapes.png");
@@ -147,6 +149,11 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
         }
         else if(isShapeMode && ui->actionpolygon->isChecked()){}
         else if(isFill) {}
+        else if(ui->actioneraser->isChecked()) {
+            painter.setPen(QPen(Qt::white, penThickness*1.25, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.setBrush(Qt::white);
+            painter.drawEllipse(event->pos().x() - penThickness/2, event->pos().y() - penThickness/2, penThickness, penThickness);
+        }
 
         else{
             // перо: черный цвет, толщина линии 3 пикселя, сплошная линия с закругленными концами
@@ -348,6 +355,7 @@ void MainWindow::on_actionFill_triggered()
 
     ui->actionFill->setChecked(true);
     ui->actionpen->setChecked(false);
+    ui->actioneraser->setChecked(false);
 }
 
 
@@ -360,6 +368,7 @@ void MainWindow::on_actionpen_triggered()
 
     ui->actionFill->setChecked(false);
     ui->actionpen->setChecked(true);
+    ui->actioneraser->setChecked(false);
 }
 
 void MainWindow::fillingPlace(QImage &image, const QPoint &pos, const QColor &color){
@@ -507,5 +516,16 @@ void MainWindow::on_actioncustom_2_triggered()
     ui->actionblue->setChecked(false);
     ui->actiongreen->setChecked(false);
     ui->actionred->setChecked(false);
+}
+
+
+void MainWindow::on_actioneraser_triggered()
+{
+    ui->actionFill->setChecked(false);
+    ui->actionpen->setChecked(false);
+    ui->actioneraser->setChecked(true);
+
+    isFill = false;
+    isShapeMode = false;
 }
 
