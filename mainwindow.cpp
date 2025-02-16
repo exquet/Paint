@@ -13,8 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     MainWindow::resize(800, 600);
-    m_image = QImage(800, 600, QImage::Format_RGB32); // создание холста
-    m_image.fill(Qt::white);
+    m_image = QImage(800, 600, QImage::Format_ARGB32); // создание холста
+    m_image.fill(Qt::transparent);
 
     //file
     QIcon fileIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/file.png");
@@ -72,6 +72,12 @@ MainWindow::MainWindow(QWidget *parent)
     //window
     QIcon logoIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/logo.png");
     MainWindow::setWindowIcon(logoIcon);
+
+    //utilities
+    QIcon utilitiesIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/utilities.png");
+    ui->menuutilities->setIcon(utilitiesIcon);
+    QIcon gridIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/grid.png");
+    ui->actiongrid->setIcon(gridIcon);
 
     setMouseTracking(true);
     if (centralWidget()){
@@ -170,8 +176,6 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
 void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
 
-    painter.drawImage(0, 0, m_image); // отрисовка изображения
-
     if(ui->actiongrid->isChecked()){
         QPen gridPen(Qt::lightGray);
         gridPen.setStyle(Qt::DashLine);
@@ -188,6 +192,8 @@ void MainWindow::paintEvent(QPaintEvent *event){
             painter.drawLine(0, y, m_image.width(), y);
         }
     }
+
+    painter.drawImage(0, 0, m_image); // отрисовка изображения
 
     QPen previewPen(Qt::gray);
     previewPen.setStyle(Qt::SolidLine);
@@ -560,7 +566,9 @@ void MainWindow::undoAction() {
 }
 
 void MainWindow::saveAction() {
+    ui->actiongrid->setChecked(false);
     QString filters = "PNG (*.png);;JPEG (*.jpg *.jpeg);;All Files (*)";
     QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "image", filters);
     m_image.save(fileName);
+    ui->actiongrid->setChecked(true);
 }
