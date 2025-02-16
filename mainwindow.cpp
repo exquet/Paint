@@ -86,6 +86,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->enter_label->hide();
 
+
+
 }
 
 MainWindow::~MainWindow()
@@ -201,9 +203,7 @@ void MainWindow::on_actionClear_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    QString filters = "PNG (*.png);;JPEG (*.jpg *.jpeg);;All Files (*)";
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "image", filters);
-    m_image.save(fileName);
+    saveAction();
 }
 
 
@@ -335,14 +335,7 @@ void MainWindow::on_actioncustom_triggered()
 
 void MainWindow::on_actionreturn_triggered()
 {
-    if(!images.isEmpty()){ 
-        m_image = images.last();
-        update();
-        images.pop_back();
-    }
-    else{
-        QMessageBox::information(this, tr("Error!"), tr("There is no action to return"));
-    }
+    undoAction();
 }
 
 
@@ -496,8 +489,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             QMainWindow::keyPressEvent(event);
         }
     }
+    if (event->modifiers() == Qt::ControlModifier) {
+        if(event->key() == Qt::Key_Z) {
+            undoAction();
+        }
+        if(event->key() == Qt::Key_S) {
+            saveAction();
+        }
+    }
     else {
-        QMessageBox::warning(this, tr("Ошибка!"), tr("Выбранно менее 2 точек"));
+        QMainWindow::keyPressEvent(event);
     }
 }
 
@@ -529,3 +530,19 @@ void MainWindow::on_actioneraser_triggered()
     isShapeMode = false;
 }
 
+void MainWindow::undoAction() {
+    if(!images.isEmpty()){
+        m_image = images.last();
+        update();
+        images.pop_back();
+    }
+    else{
+        QMessageBox::information(this, tr("Error!"), tr("There is no action to return"));
+    }
+}
+
+void MainWindow::saveAction() {
+    QString filters = "PNG (*.png);;JPEG (*.jpg *.jpeg);;All Files (*)";
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "image", filters);
+    m_image.save(fileName);
+}

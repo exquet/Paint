@@ -15,6 +15,7 @@
 #include <QKeyEvent>
 #include <QPolygon>
 #include <QColorDialog>
+#include <QShortcut>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -86,6 +87,9 @@ private slots:
     void on_actioncustom_2_triggered();
 
     void on_actioneraser_triggered();
+
+    void undoAction();
+    void saveAction();
 
 private:
     Ui::MainWindow *ui;
