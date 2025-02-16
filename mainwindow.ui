@@ -99,12 +99,19 @@
     <addaction name="actiontext"/>
     <addaction name="actionpolygon"/>
    </widget>
+   <widget class="QMenu" name="menuutilities">
+    <property name="title">
+     <string>utilities</string>
+    </property>
+    <addaction name="actiongrid"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
    <addaction name="menuThickness"/>
    <addaction name="menuback"/>
    <addaction name="menufill"/>
    <addaction name="menushapes"/>
+   <addaction name="menuutilities"/>
   </widget>
   <action name="actionClear">
    <property name="text">
@@ -277,6 +284,14 @@
    </property>
    <property name="text">
     <string>eraser</string>
+   </property>
+  </action>
+  <action name="actiongrid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>grid</string>
    </property>
   </action>
  </widget>

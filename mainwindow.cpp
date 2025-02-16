@@ -169,7 +169,25 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
 
 void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
+
     painter.drawImage(0, 0, m_image); // отрисовка изображения
+
+    if(ui->actiongrid->isChecked()){
+        QPen gridPen(Qt::lightGray);
+        gridPen.setStyle(Qt::DashLine);
+        gridPen.setWidth(1);
+        painter.setPen(gridPen);
+
+        int gridSpacing = 20;  // интервал
+        // вертикальные линии
+        for (int x = 0; x < m_image.width(); x += gridSpacing){
+            painter.drawLine(x, 0, x, m_image.height());
+        }
+        // горизонтальные линии
+        for (int y = 0; y < m_image.height(); y += gridSpacing){
+            painter.drawLine(0, y, m_image.width(), y);
+        }
+    }
 
     QPen previewPen(Qt::gray);
     previewPen.setStyle(Qt::SolidLine);
