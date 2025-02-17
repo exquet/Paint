@@ -184,12 +184,12 @@ void MainWindow::paintEvent(QPaintEvent *event){
 
         int gridSpacing = 20;  // интервал
         // вертикальные линии
-        for (int x = 0; x < m_image.width(); x += gridSpacing){
-            painter.drawLine(x, 0, x, m_image.height());
+        for (int x = 0; x < width(); x += gridSpacing) {
+            painter.drawLine(x, 0, x, height());
         }
         // горизонтальные линии
-        for (int y = 0; y < m_image.height(); y += gridSpacing){
-            painter.drawLine(0, y, m_image.width(), y);
+        for (int y = 0; y < height(); y += gridSpacing) {
+            painter.drawLine(0, y, width(), y);
         }
     }
 
@@ -569,6 +569,12 @@ void MainWindow::saveAction() {
     ui->actiongrid->setChecked(false);
     QString filters = "PNG (*.png);;JPEG (*.jpg *.jpeg);;All Files (*)";
     QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "image", filters);
-    m_image.save(fileName);
+
+    QImage saveImage(m_image.size(), QImage::Format_RGB32);
+    saveImage.fill(Qt::white);
+    QPainter painter(&saveImage);
+    painter.drawImage(0, 0, m_image);
+
+    saveImage.save(fileName);
     ui->actiongrid->setChecked(true);
 }
