@@ -176,6 +176,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
 void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
 
+    // this->rect() возвращает QRect(прямоугольную область) текущего виджета
+    painter.fillRect(this->rect(), Qt::white);
+
     if(ui->actiongrid->isChecked()){
         QPen gridPen(Qt::lightGray);
         gridPen.setStyle(Qt::DashLine);
@@ -183,13 +186,16 @@ void MainWindow::paintEvent(QPaintEvent *event){
         painter.setPen(gridPen);
 
         int gridSpacing = 20;  // интервал
+
+        int widgetWidth = this->width();
+        int widgetHeight = this->height();
         // вертикальные линии
-        for (int x = 0; x < width(); x += gridSpacing) {
-            painter.drawLine(x, 0, x, height());
+        for (int x = 0; x < widgetWidth; x += gridSpacing){
+            painter.drawLine(x, 0, x, widgetHeight);
         }
         // горизонтальные линии
-        for (int y = 0; y < height(); y += gridSpacing) {
-            painter.drawLine(0, y, width(), y);
+        for (int y = 0; y < widgetHeight; y += gridSpacing){
+            painter.drawLine(0, y, widgetWidth, y);
         }
     }
 
@@ -419,8 +425,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
     if (event->size().width() > m_image.width() || event->size().height() > m_image.height())
     {
-        QImage newImage(event->size(), QImage::Format_RGB32);
-        newImage.fill(Qt::white);
+        QImage newImage(event->size(), QImage::Format_ARGB32);
+        newImage.fill(Qt::transparent);
         QPainter painter(&newImage);
         painter.drawImage(QPoint(0, 0), m_image);
         m_image = newImage;
@@ -570,10 +576,10 @@ void MainWindow::saveAction() {
     QString filters = "PNG (*.png);;JPEG (*.jpg *.jpeg);;All Files (*)";
     QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить изображение"), "image", filters);
 
-    QImage saveImage(m_image.size(), QImage::Format_RGB32);
+    QImage saveImage(m_image.size(), QImage::Format_RGB32); // новое изображение
     saveImage.fill(Qt::white);
     QPainter painter(&saveImage);
-    painter.drawImage(0, 0, m_image);
+    painter.drawImage(0, 0, m_image); // отрисовка рисунка пользователя
 
     saveImage.save(fileName);
     ui->actiongrid->setChecked(true);
