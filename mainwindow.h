@@ -23,6 +23,13 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+struct LoadedImage {
+    QImage image;      // само изображение
+    QPoint pos;        // позиция изображения на холсте
+    bool dragging;     // указывает, что изображение перетаскивается
+    QPoint dragOffset; // смещение курсора относительно позиции изображения при начале перетаскивания
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -106,8 +113,6 @@ private:
     QPoint mousePos;
     QString shapeText;
     QVector<QPoint> points;
-    bool isImageLoaded;
-    QImage loadedImage;
-    QPoint imagePos;
+    QVector<LoadedImage> loadedImages;
 };
 #endif // MAINWINDOW_H

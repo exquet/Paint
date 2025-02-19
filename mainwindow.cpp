@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     , isFill(false)
     , isShapeMode(false)
     , shapeSize(50)
-    , isImageLoaded(false)
 {
     ui->setupUi(this);
 
@@ -210,6 +209,10 @@ void MainWindow::paintEvent(QPaintEvent *event){
     painter.setPen(previewPen);
     painter.setBrush(Qt::NoBrush);
 
+    for(const LoadedImage &img : loadedImages) { // рисование всех изображений
+        painter.drawImage(img.pos, img.image);
+    }
+
     if(isShapeMode && ui->actioncircle->isChecked()){
         painter.drawEllipse(mousePos.x() - shapeSize/2, mousePos.y() - shapeSize/2, shapeSize, shapeSize);
     }
@@ -224,9 +227,6 @@ void MainWindow::paintEvent(QPaintEvent *event){
     }
     if(isShapeMode && ui->actionpolygon->isChecked()) {
         painter.drawPolygon(points);
-    }
-    if(isImageLoaded) {
-        painter.drawImage(imagePos, loadedImage);
     }
 }
 
@@ -593,7 +593,7 @@ void MainWindow::saveAction() {
 
 void MainWindow::on_actionadd_img_triggered()
 {
-    QString filters = "PNG (*.png) ;;JPEG (*.jpg *.jpeg) ;;All Files (*)";
+    QString filters = "All Files (*) ;;JPEG (*.jpg *.jpeg) ;;PNG (*.png)";
     QString fileName = QFileDialog::getOpenFileName(this, tr("Выберите изображение"), "", filters);
 
     if(fileName.isEmpty())
@@ -607,9 +607,12 @@ void MainWindow::on_actionadd_img_triggered()
 
     img = img.scaled(500, 500, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-    loadedImage = img;
-    isImageLoaded = true;
-    imagePos = QPoint(0, 0);
+    LoadedImage newImage;
+    newImage.image = img;
+    newImage.pos = QPoint(0, 0);
+    newImage.dragging = false;
+
+    loadedImages.push_back(newImage);
 
     update();
 }
