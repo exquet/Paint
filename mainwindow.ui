@@ -104,6 +104,7 @@
      <string>utilities</string>
     </property>
     <addaction name="actiongrid"/>
+    <addaction name="actionadd_img"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuColour"/>
@@ -292,6 +293,11 @@
    </property>
    <property name="text">
     <string>grid</string>
+   </property>
+  </action>
+  <action name="actionadd_img">
+   <property name="text">
+    <string>add img</string>
    </property>
   </action>
  </widget>

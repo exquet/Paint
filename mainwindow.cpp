@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     , isFill(false)
     , isShapeMode(false)
     , shapeSize(50)
+    , isImageLoaded(false)
 {
     ui->setupUi(this);
 
@@ -78,6 +79,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->menuutilities->setIcon(utilitiesIcon);
     QIcon gridIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/grid.png");
     ui->actiongrid->setIcon(gridIcon);
+    QIcon imageIcon("C:/Users/dimat/Documents/QT projects/Paint/Icons/image.png");
+    ui->actionadd_img->setIcon(imageIcon);
 
     setMouseTracking(true);
     if (centralWidget()){
@@ -221,6 +224,9 @@ void MainWindow::paintEvent(QPaintEvent *event){
     }
     if(isShapeMode && ui->actionpolygon->isChecked()) {
         painter.drawPolygon(points);
+    }
+    if(isImageLoaded) {
+        painter.drawImage(imagePos, loadedImage);
     }
 }
 
@@ -584,3 +590,27 @@ void MainWindow::saveAction() {
     saveImage.save(fileName);
     ui->actiongrid->setChecked(true);
 }
+
+void MainWindow::on_actionadd_img_triggered()
+{
+    QString filters = "PNG (*.png) ;;JPEG (*.jpg *.jpeg) ;;All Files (*)";
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Выберите изображение"), "", filters);
+
+    if(fileName.isEmpty())
+        return;
+
+    QImage img;
+    if(!img.load(fileName)) {
+        QMessageBox::warning(this, tr("Ошибка загрузки"), tr("Не удалось загрузить изображение"));
+        return;
+    }
+
+    img = img.scaled(500, 500, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    loadedImage = img;
+    isImageLoaded = true;
+    imagePos = QPoint(0, 0);
+
+    update();
+}
+

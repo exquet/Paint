@@ -91,6 +91,8 @@ private slots:
     void undoAction();
     void saveAction();
 
+    void on_actionadd_img_triggered();
+
 private:
     Ui::MainWindow *ui;
     QImage m_image;
@@ -104,5 +106,8 @@ private:
     QPoint mousePos;
     QString shapeText;
     QVector<QPoint> points;
+    bool isImageLoaded;
+    QImage loadedImage;
+    QPoint imagePos;
 };
 #endif // MAINWINDOW_H
