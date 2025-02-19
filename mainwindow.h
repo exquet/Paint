@@ -45,6 +45,7 @@ protected:
     void fillingPlace(QImage &image, const QPoint &pos, const QColor &color);
     void resizeEvent(QResizeEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 
 private slots:

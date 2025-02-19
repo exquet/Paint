@@ -104,7 +104,21 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event){
-    if(event->button() == Qt::LeftButton){ // отслеживание первого нажатия
+    if(event->button() == Qt::LeftButton) {
+        // проверяем, нажата ли область одного из загруженных изображений
+        for (int i = loadedImages.size() - 1; i >= 0; i--) {
+            LoadedImage &img = loadedImages[i];
+            QRect imageRect(img.pos, img.image.size());
+            if(imageRect.contains(event->pos())){
+                img.dragging = true;
+                img.dragOffset = event->pos() - img.pos;
+                // перемещаем выбранное изображение в конец вектора, чтобы оно отображалось поверх остальных
+                loadedImages.move(i, loadedImages.size()-1);
+                update();
+                return; // если нажата область изображения, не выполняем остальной код
+            }
+        }
+
         m_lastPoint = event->pos();
         images.push_back(m_image);
         QPainter painter(&m_image);
@@ -112,7 +126,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
 
         if(isFill){ fillingPlace(m_image, m_lastPoint, colourPen); }
         if(isShapeMode && ui->actioncircle->isChecked()) {
-            // верхний левый угол ограничивающего прямоугольника вычисляем так, чтобы круг был центром в event->pos()
             painter.drawEllipse(event->pos().x() - shapeSize/2, event->pos().y() - shapeSize/2, shapeSize, shapeSize);
             update();
         }
@@ -122,14 +135,13 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
         }
         if(isShapeMode && ui->actiontext->isChecked()) {
             QFont font = painter.font();
-            font.setPointSize(shapeSize); // size
+            font.setPointSize(shapeSize);
             painter.setFont(font);
             painter.drawText(event->pos().x(), event->pos().y(), shapeText);
             update();
         }
         if(isShapeMode && ui->actionpolygon->isChecked()) {
             points.push_back(event->pos());
-
             if(points.size() >= 2) {
                 ui->enter_label->show();
             }
@@ -137,8 +149,17 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
     }
 }
 
+
 void MainWindow::mouseMoveEvent(QMouseEvent *event){
     mousePos = event->pos();
+
+    for (int i = 0; i < loadedImages.size(); i++) {
+        if(loadedImages[i].dragging) {
+            loadedImages[i].pos = event->pos() - loadedImages[i].dragOffset;
+            update();
+            return; // если перетаскивается изображение, остальной код не выполняется
+        }
+    }
 
     if(event->buttons() == Qt::LeftButton){ // отслеживание изменения положия при нажатом ЛКМ
         QPainter painter(&m_image);
@@ -174,6 +195,16 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
     }
     update();
 }
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event){ // отпускание ЛКМ
+    if(event->button() == Qt::LeftButton){
+        for (int i = 0; i < loadedImages.size(); i++) {
+            loadedImages[i].dragging = false;
+        }
+    }
+    QMainWindow::mouseReleaseEvent(event);
+}
+
 
 void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
