@@ -648,3 +648,34 @@ void MainWindow::on_actionadd_img_triggered()
     update();
 }
 
+void MainWindow::contextMenuEvent(QContextMenuEvent *event) {
+    // перебираем все загруженные изображения в обратном порядке,
+    // чтобы при наложении (overlap) самое верхнее изображение реагировало первым.
+    for (int i = loadedImages.size() - 1; i >= 0; i--) {
+        LoadedImage &img = loadedImages[i];
+        QRect imageRect(img.pos, img.image.size()); // определяем область изображения на холсте
+        if (imageRect.contains(event->pos())) {
+            QMenu menu(this);
+            QAction *resizeAction = menu.addAction("Изменить размер");
+            // отображаем меню по глобальной позиции курсора и ожидаем выбор пользователя
+            QAction *selectedAction = menu.exec(event->globalPos());
+            if (selectedAction == resizeAction) {
+                bool ok;
+                int newWidth = QInputDialog::getInt(this, "Изменить размер", "Новая ширина:",
+                                                     img.image.width(), 1, 10000, 1, &ok);
+                if (!ok) return; // если пользователь отменил ввод - выходим из метода
+                int newHeight = QInputDialog::getInt(this, "Изменить размер", "Новая высота:",
+                                                     img.image.height(), 1, 10000, 1, &ok);
+                if (!ok) return;
+
+                img.image = img.image.scaled(newWidth, newHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                update();
+            }
+
+            // после обработки первого найденного изображения выходим из метода
+            return;
+        }
+    }
+    QMainWindow::contextMenuEvent(event);
+}
+

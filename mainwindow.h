@@ -16,6 +16,8 @@
 #include <QPolygon>
 #include <QColorDialog>
 #include <QShortcut>
+#include <QContextMenuEvent>
+#include <QMenu>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -46,59 +48,35 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
 
 private slots:
     void on_actionClear_triggered();
-
     void on_actionSave_triggered();
-
     void on_actionblack_triggered();
-
     void on_actionwhite_triggered();
-
     void on_actionred_triggered();
-
     void on_actionblue_triggered();
-
     void on_actiongreen_triggered();
-
     void on_action1px_triggered();
-
     void on_action2px_triggered();
-
     void on_action3px_triggered();
-
     void on_action4px_triggered();
-
     void on_action5px_triggered();
-
     void on_actioncustom_triggered();
-
     void on_actionreturn_triggered();
-
     void on_actionFill_triggered();
-
     void on_actionpen_triggered();
-
     void on_actionShapes();
-
-
     void on_actioncircle_triggered();
-
     void on_actionsquare_triggered();
-
     void on_actiontext_triggered();
-
     void on_actionpolygon_triggered();
-
     void on_actioncustom_2_triggered();
-
     void on_actioneraser_triggered();
-
     void undoAction();
     void saveAction();
-
     void on_actionadd_img_triggered();
 
 private:
